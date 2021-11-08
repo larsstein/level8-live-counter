@@ -41,10 +41,10 @@ const YELLOW = 20;
 let backgroundGradient = new LinearGradient();
 backgroundGradient.locations = [0, 0.2, 0.8, 1];
 backgroundGradient.colors = [
-  new Color("#EEB01E"),
-  new Color("#F6D77C"),
-  new Color("#F6D77C"),
-  new Color("#EEB01E")
+	new Color("#EEB01E"),
+	new Color("#F6D77C"),
+	new Color("#F6D77C"),
+	new Color("#EEB01E")
 ];
 
 // ---------------- //
@@ -79,43 +79,43 @@ async function createWidget() {
 	// heading text related
 	let headingText = headingStack.addText("Level 8");
 	headingText.font = Font.boldRoundedSystemFont(20);  
-  headingText.textColor = Color.black();
+	headingText.textColor = Color.black();
 	headingText.centerAlignText();
 	// sub heading text related
 	let subHeadingText = w.addText("Live-Counter");
 	subHeadingText.font = Font.lightSystemFont(15);  
-  subHeadingText.textColor = Color.black();
+	subHeadingText.textColor = Color.black();
 	subHeadingText.centerAlignText();
 	w.addSpacer(6);
 	
 	// content related
 	// load data
 	let data = await getData();
-  let color = getColor(data[0], data[1]);
-  if(DEBUG)console.log(color);
+	let color = getColor(data[0], data[1]);
+	if(DEBUG)console.log(color);
     
     // free
-  let freeStack = w.addStack();
+	let freeStack = w.addStack();
 	freeStack.addSpacer(6);
 	let freeText = freeStack.addText("Frei: ");
 	freeText.font = Font.heavyMonospacedSystemFont(20);  
-  freeText.textColor = Color.black();
+	freeText.textColor = Color.black();
 	freeStack.addSpacer(24);
 	let freeDataText = freeStack.addText(data[1]);
 	freeDataText.font = Font.heavyMonospacedSystemFont(20);   
-  freeDataText.textColor = color;
-  w.addSpacer(4);
+	freeDataText.textColor = color;
+	w.addSpacer(4);
     
-  // used
-  let usedStack = w.addStack();
-  usedStack.addSpacer(6);    
+	// used
+	let usedStack = w.addStack();
+	usedStack.addSpacer(6);    
 	let usedText = usedStack.addText("Belegt: ");
 	usedText.font = Font.mediumSystemFont(14);  
-  usedText.textColor = Color.black();
+	usedText.textColor = Color.black();
 	usedStack.addSpacer(30);  
-  let usedDataText = usedStack.addText(data[0]);
+	let usedDataText = usedStack.addText(data[0]);
 	usedDataText.font = Font.mediumSystemFont(14);  
-  usedDataText.textColor = Color.black();
+	usedDataText.textColor = Color.black();
 	w.addSpacer(8);
 
 	// footer
@@ -125,7 +125,7 @@ async function createWidget() {
 	let date = new Date();
 	let footerText = w.addText(dateFormatter.string(date));
 	footerText.font = Font.ultraLightSystemFont(10);  
-  footerText.textColor = Color.black();
+	footerText.textColor = Color.black();
 	footerText.rightAlignText();
  	
 	return w;
@@ -135,15 +135,15 @@ async function createWidget() {
  *	Determines the color which is used for displaying the number of free slots.
  */
 function getColor(pax, free){
-  let max = parseInt(pax) + parseInt(free);
-  let percent = Math.round(free * 100 / max);
-  if(DEBUG) console.log("Percent free: " + percent);
-  if(percent >= GREEN)
-  	return Color.green();
-  else if(percent >= YELLOW)
-  	return Color.orange();
-  else
-  	return Color.red();
+	let max = parseInt(pax) + parseInt(free);
+	let percent = Math.round(free * 100 / max);
+	if(DEBUG) console.log("Percent free: " + percent);
+	if(percent >= GREEN)
+ 		return Color.green();
+	else if(percent >= YELLOW)
+ 		return Color.orange();
+	else
+		return Color.red();
 }
 
 /**
