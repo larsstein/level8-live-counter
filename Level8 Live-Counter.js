@@ -13,7 +13,10 @@
  *  Widget information:
  *	Source: https://github.com/larsstein/level8-live-counter
  *	Author: Lars Stein
- *	Version: 1.0.0
+ *	Version: 1.0.1
+ *	
+ *	Changelog:
+ * 	# 1.0.1:	Support new capacity>99; Fixed alignment issues
  */
 
 // sets debug mode for console print outs
@@ -98,9 +101,15 @@ async function createWidget() {
 	let freeStack = w.addStack();
 	freeStack.addSpacer(6);
 	let freeText = freeStack.addText("Frei: ");
-	freeText.font = Font.heavyMonospacedSystemFont(20);  
+	freeText.font = Font.heavyMonospacedSystemFont(18);  
 	freeText.textColor = Color.black();
-	freeStack.addSpacer(24);
+	if(data[1] >= 100){
+		freeStack.addSpacer(22);
+	} else if(data[1] >= 10){
+		freeStack.addSpacer(32);
+	} else{ 
+		freeStack.addSpacer(48);
+	}	
 	let freeDataText = freeStack.addText(data[1]);
 	freeDataText.font = Font.heavyMonospacedSystemFont(20);   
 	freeDataText.textColor = color;
@@ -112,7 +121,13 @@ async function createWidget() {
 	let usedText = usedStack.addText("Belegt: ");
 	usedText.font = Font.mediumSystemFont(14);  
 	usedText.textColor = Color.black();
-	usedStack.addSpacer(30);  
+	if(data[0] >= 100){
+  		usedStack.addSpacer(30);  
+	} else if(data[0] >= 10){
+  		usedStack.addSpacer(38);
+	} else {
+  		usedStack.addSpacer(44);
+	}
 	let usedDataText = usedStack.addText(data[0]);
 	usedDataText.font = Font.mediumSystemFont(14);  
 	usedDataText.textColor = Color.black();
@@ -156,14 +171,21 @@ function extractData(html, pax){
 	start += pax ? PAX_DELIMITER.length : FREE_DELIMITER.length;
 	if(DEBUG)console.log("Start delimiter: " + start);
 	let end;
-	// check if it is a single or two digit number
-	if (html.charAt(start + 1) == '"')
-		end = start + 1;
-	else
-		end = start + 2;	 
+	// check if it is a single, two or three digit number
+	let i = 1;
+	while(html.charAt(start + i) != '"'){
+  		i++;
+	}
+	end = start + i;
 	if(DEBUG) console.log("End delimiter: " + end);
 	let data = html.substring(start, end);
 	if(DEBUG) console.log("Extracted data: " + data);
+	if(DEBUG){
+  		if(pax)
+  			data = "120";
+  		if(!pax)
+  			data = "120";
+	}
 	return data;
 }
 
@@ -184,7 +206,6 @@ async function getData(){
 	let free = extractData(html, false);
 	return [pax, free];
 }
-
 
 
 
